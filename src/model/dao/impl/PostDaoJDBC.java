@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +26,36 @@ public class PostDaoJDBC implements PostDao{
 	
 	@Override
 	public void insert(Post obj) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
+		
+		try {
+			st = conn.prepareStatement("INSERT INTO comentario(comentario, eps, video, idUsuarios) "
+					+ "VALUES(?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+			
+			st.setString(1, obj.getPost());
+			st.setInt(2, 8);
+			st.setDate(3, new java.sql.Date(obj.getDatePost().getTime()));
+			st.setInt(4, obj.getUsuario().getId());
+			
+			int linhasAfetadas = st.executeUpdate();
+			
+			if(linhasAfetadas > 0) {
+				ResultSet rs = st.getGeneratedKeys();
+				if(rs.next()) {
+					int id = rs.getInt(1);
+					obj.setIdpost(id);
+					
+				}
+				DB.closeResultSett(rs);
+			}else {
+				throw new DbException("Erro enesperado, nem uma linha afetada");
+			}
+			
+		}catch(SQLException e) {
+			throw new DbException(e.getMessage());
+		}finally {
+			DB.closeStatement(st);
+		}	
 		
 	}
 

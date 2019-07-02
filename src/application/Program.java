@@ -1,6 +1,7 @@
 package application;
 
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 import model.dao.DaoFactory;
@@ -33,6 +34,10 @@ public class Program {
 			System.out.println(obj);
 		}
 		
+		System.out.println("\n===Teste 4: Post Insert() ===");
+		Post post2 = new Post(null, "gtmnsagadsfadr", new Date(), user);
+		postDao.insert(post2);
+		System.out.println("Inserido! Novo id = " + post2.getIdpost());
 	}
 
 }
