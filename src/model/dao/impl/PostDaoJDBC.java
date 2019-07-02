@@ -61,7 +61,23 @@ public class PostDaoJDBC implements PostDao{
 
 	@Override
 	public void update(Post obj) {
-		// TODO Auto-generated method stub
+
+		PreparedStatement st = null;
+
+		try {
+			st = conn.prepareStatement("UPDATE comentario SET comentario = ?" 
+										+ "WHERE idcomentario = ?");
+			
+			st.setString(1, obj.getPost());
+			st.setInt(2, obj.getIdpost());
+
+			st.executeUpdate();
+			
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+		}
 		
 	}
 

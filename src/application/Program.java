@@ -38,6 +38,12 @@ public class Program {
 		Post post2 = new Post(null, "gtmnsagadsfadr", new Date(), user);
 		postDao.insert(post2);
 		System.out.println("Inserido! Novo id = " + post2.getIdpost());
+		
+		System.out.println("\n===Teste 5: Post Update() ===");
+		post = postDao.findById(3);
+		post.setPost("Martha Wenny morreu quando Bruce tinha apenhas 8 anos");
+		postDao.update(post);
+		
 	}
 
 }
