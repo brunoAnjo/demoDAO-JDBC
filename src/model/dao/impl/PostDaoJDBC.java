@@ -50,17 +50,9 @@ public class PostDaoJDBC implements PostDao{
 			st.setInt(1, id);
 			rs = st.executeQuery();
 			if(rs.next()) {
-				Usuario user = new Usuario();
-				user.setId(rs.getInt("idusuarios"));
-				user.setName(rs.getString("UserNome"));
-				user.setSobrenome(rs.getString("sobrenome"));
-				user.setDataNas(rs.getDate("datanas"));
+				Usuario user = instanciaUser(rs);
 				
-				Post post = new Post();
-				post.setIdpost(rs.getInt("idcomentario"));
-				post.setPost(rs.getString("comentario"));
-				post.setUsuario(user);
-				
+				Post post = instanciaPost(rs, user);
 				return post;
 			}
 			return null;
@@ -72,6 +64,24 @@ public class PostDaoJDBC implements PostDao{
 			DB.closeResultSett(rs);
 		}
 		
+	}
+
+	private Post instanciaPost(ResultSet rs, Usuario user) throws SQLException {
+		Post post = new Post();
+		post.setIdpost(rs.getInt("idcomentario"));
+		post.setPost(rs.getString("comentario"));
+		post.setUsuario(user);
+		
+		return post;
+	}
+
+	private Usuario instanciaUser(ResultSet rs) throws SQLException {
+		Usuario user = new Usuario();
+		user.setId(rs.getInt("idusuarios"));
+		user.setName(rs.getString("UserNome"));
+		user.setSobrenome(rs.getString("sobrenome"));
+		user.setDataNas(rs.getDate("datanas"));
+		return user;
 	}
 
 	@Override
