@@ -3,6 +3,7 @@ package model.dao;
 import java.util.List;
 
 import model.entities.Post;
+import model.entities.Usuario;
 
 public interface PostDao {
 	
@@ -11,5 +12,6 @@ public interface PostDao {
 	void deleteById(Integer id);
 	Post findById(Integer id);
 	List<Post> findAll();
+	List<Post> findByUsuario(Usuario user);
 
 }
