@@ -26,6 +26,13 @@ public class Program {
 			System.out.println(obj);
 		}
 		
+		
+		System.out.println("\n===Teste 3: Post findAll() ===");
+		list = postDao.findAll();
+		for(Post obj : list) {
+			System.out.println(obj);
+		}
+		
 	}
 
 }

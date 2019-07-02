@@ -87,10 +87,46 @@ public class PostDaoJDBC implements PostDao{
 		return user;
 	}
 
+
 	@Override
 	public List<Post> findAll() {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement("SELECT comentario.*, usuarios.nome as UserNome, usuarios.sobrenome, usuarios.datanas "
+					+ "FROM comentario INNER JOIN usuarios "
+					+ "ON comentario.idUsuarios = usuarios.idusuarios "
+					+ "ORDER BY UserNome");
+			
+			rs = st.executeQuery();
+			
+			List<Post> list = new ArrayList<>();
+			Map<Integer, Usuario> map = new HashMap<>();
+			
+			while(rs.next()) {
+				
+				Usuario user = map.get(rs.getInt("idusuarios"));
+				
+				if(user == null) {
+					user = instanciaUser(rs);
+					map.put(rs.getInt("idusuarios"), user);
+				}
+				
+				
+				Post post = instanciaPost(rs, user);
+				list.add(post);
+				
+			}
+			
+			return list;
+			
+		}catch(SQLException e) {
+			throw new DbException(e.getMessage()); 
+		}finally {
+			DB.closeStatement(st);
+			DB.closeResultSett(rs);
+		}
 		
-		return null;
 	}
 
 	@Override
